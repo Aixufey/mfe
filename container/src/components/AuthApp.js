@@ -1,5 +1,4 @@
-// Importing remotes as mount functions - no coupling - generic integration only
-import { mount } from 'marketing/MarketingIndex';
+import { mount } from 'auth/AuthIndex';
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -19,9 +18,7 @@ export default () => {
         }
       },
     });
-    // Container listen to change to child's location - if child changes, update container
-    history.listen(onParentNavigate)
-
+    history.listen(onParentNavigate);
   }, []);
 
   return <div ref={ref} />;

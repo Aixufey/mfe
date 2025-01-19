@@ -4,11 +4,15 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 // Mount fn to start the app
-const mount = (e, { onNavigate, defaultHistory }) => {
+const mount = (e, { onNavigate, defaultHistory, initialPath }) => {
   // subapp will use memory history to avoid browser history when navigating
   // Marketing loads up, receives onNavigate from container, creates a memory history and listens to it.
   // When Marketing changes routes, returns
-  const history = defaultHistory || createMemoryHistory();
+  const history =
+    defaultHistory ||
+    createMemoryHistory({
+      initialEntries: [initialPath],
+    });
 
   if (onNavigate) {
     // Receives location from container, pushes to memory history
