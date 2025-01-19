@@ -1,17 +1,19 @@
 import {
-  StylesProvider,
   createGenerateClassName,
+  StylesProvider,
 } from '@material-ui/core/styles';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import AuthApp from './components/AuthApp';
 import Header from './components/Header';
-import MarketingApp from './components/MarketingApp';
+import Progress from './components/Progress';
 
 // CSS prefix avoid class name collision
 const generateClassName = createGenerateClassName({
   productionPrefix: 'co',
 });
+
+const MarketingAppLazy = lazy(() => import('./components/MarketingApp'));
+const AuthAppLazy = lazy(() => import('./components/AuthApp'));
 
 export default function App() {
   return (
@@ -20,11 +22,12 @@ export default function App() {
         <div>
           <Header />
           {/* Switch case for route based on matching route */}
-          <Switch>
-            <Route path="/auth" component={AuthApp} />
-            <Route path="/" component={MarketingApp} />
-          </Switch>
-          <MarketingApp />
+          <Suspense fallback={<Progress />}>
+            <Switch>
+              <Route path="/auth" component={AuthAppLazy} />
+              <Route path="/" component={MarketingAppLazy} />
+            </Switch>
+          </Suspense>
         </div>
       </BrowserRouter>
     </StylesProvider>
